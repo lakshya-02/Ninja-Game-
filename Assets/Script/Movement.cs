@@ -4,18 +4,35 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    
-    public float speed = 5.0f;
-    
-    void update()
+    public float moveSpeed = 5f;
+    public float jumpHeight = 5f;
+    public float gravity = 9.81f;
+    private float verticalSpeed;
+
+    void Update()
     {
-        playermovement();
-    }
-    void playermovement()
-    {
+        // Horizontal & Vertical Movement
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(horizontal, 0.0f, vertical);
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        Vector3 moveDir = new Vector3(horizontal, 0f, vertical) * moveSpeed * Time.deltaTime;
+        transform.Translate(moveDir, Space.World);
+
+        // Simple ground check (no bool used)
+        if (transform.position.y <= 0.5f)
+        {
+            verticalSpeed = 0f;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                verticalSpeed = jumpHeight;
+            }
+        }
+        else
+        {
+            // Gravity
+            verticalSpeed -= gravity * Time.deltaTime;
+        }
+
+        // Apply jump or fall
+        transform.Translate(0f, verticalSpeed * Time.deltaTime, 0f, Space.World);
     }
 }
