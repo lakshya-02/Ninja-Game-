@@ -4,35 +4,22 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float jumpHeight = 5f;
-    public float gravity = 9.81f;
-    private float verticalSpeed;
+    public float moveSpeed = 5f; 
+    public float jumpHeight = 5f; // Left for possible expansion, no gravity used
 
     void Update()
     {
-        // Horizontal & Vertical Movement
+        // Basic left-right-up movement
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        Vector3 moveDir = new Vector3(horizontal, 0f, vertical) * moveSpeed * Time.deltaTime;
-        transform.Translate(moveDir, Space.World);
 
-        // Simple ground check (no bool used)
-        if (transform.position.y <= 0.5f)
-        {
-            verticalSpeed = 0f;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                verticalSpeed = jumpHeight;
-            }
-        }
-        else
-        {
-            // Gravity
-            verticalSpeed -= gravity * Time.deltaTime;
-        }
+        Vector3 movement = new Vector3(horizontal, vertical, 0f) * moveSpeed * Time.deltaTime;
+        transform.Translate(movement, Space.World);
 
-        // Apply jump or fall
-        transform.Translate(0f, verticalSpeed * Time.deltaTime, 0f, Space.World);
+        // Rotate based on left (-180) or right (0)
+        if (horizontal < 0)
+            transform.eulerAngles = new Vector3(0f, -180f, 0f);
+        else if (horizontal > 0)
+            transform.eulerAngles = new Vector3(0f, 0f, 0f);
     }
 }
