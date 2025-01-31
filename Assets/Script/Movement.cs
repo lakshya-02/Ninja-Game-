@@ -23,3 +23,4 @@ public class Movement : MonoBehaviour
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
     }
 }
+
