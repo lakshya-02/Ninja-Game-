@@ -9,10 +9,10 @@ public class Kunaio : MonoBehaviour
     void Start()
     {
         transform.eulerAngles = new Vector3(0f, 0f, 180);
-        Destroy(gameObject, 2f);
     }
     void upadate()
     {
         transform.Translate(Vector2.right * speeed * Time.deltaTime);
+
     }
 }
